@@ -1,54 +1,94 @@
-name: Build
+name: GHAV Web Scrobbler Build 3660
 on:
   push:
-  pull_request:
-    types: [opened, synchronize]
+    branches:
+      - 'codex/ghav-ws-build3660-*'
+permissions:
+  contents: read
 jobs:
-  build:
-    name: Build the extension
-    runs-on: macos-latest
+  build-chrome:
+    name: Build the extension for Chrome
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Get Node.js version from .nvmrc
         id: get-node-version
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> "$GITHUB_OUTPUT"
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: '${{ steps.get-node-version.outputs.NODE_VERSION }}'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build the extension for Chrome
+      - name: Build the extension
         run: |
           npm run build chrome
 
-      - name: Upload the extension for Chrome as an artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload the extension as an artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: web-scrobbler-chrome
           path: build/chrome
 
-      - name: Build the extension for Firefox
+  build-firefox:
+    name: Build the extension for Firefox
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Get Node.js version from .nvmrc
+        id: get-node-version
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '${{ steps.get-node-version.outputs.NODE_VERSION }}'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the extension
         run: |
           npm run build firefox
 
-      - name: Upload the extension for Firefox as an artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload the extension as an artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: web-scrobbler-firefox
           path: build/firefox
 
-      - name: Build the extension for Safari
+  build-safari:
+    name: Build the extension for Safari
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Get Node.js version from .nvmrc
+        id: get-node-version
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '${{ steps.get-node-version.outputs.NODE_VERSION }}'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the extension
         run: |
           npm run build safari
 
-      - name: Upload the extension for Safari as an artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload the extension as an artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: web-scrobbler-safari
           path: build/safari
