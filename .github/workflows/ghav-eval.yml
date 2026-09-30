@@ -1,0 +1,79 @@
+name: GHAV Web Scrobbler timing
+
+on:
+  push:
+    branches:
+      - 'codex/ghav-ws-*'
+
+permissions:
+  contents: read
+
+jobs:
+  ghav-part-lint-1:
+    name: 'Run linters [1: eslint]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: npm ci
+      - name: Run lint:eslint
+        run: npm run lint:eslint
+        env:
+          CI: 'true'
+  ghav-part-lint-2:
+    name: 'Run linters [2: stylelint]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: npm ci
+      - name: Run lint:stylelint
+        run: npm run lint:stylelint
+        env:
+          CI: 'true'
+  ghav-part-lint-3:
+    name: 'Run linters [3: prettier]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: npm ci
+      - name: Run lint:prettier
+        run: npm run lint:prettier
+        env:
+          CI: 'true'
+  ghav-part-lint-4:
+    name: 'Run linters [4: markdown]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: npm ci
+      - name: Run lint:markdown
+        run: npm run lint:markdown
+        env:
+          CI: 'true'
