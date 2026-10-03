@@ -6,3 +6,5 @@ src/vendor/**
 
 package.json
 package-lock.json
+# ghav harness files
+.github/workflows/ghav-*.yml
